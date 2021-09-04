@@ -18,28 +18,31 @@ class Chat implements MessageComponentInterface {
         echo "New connection! ({$conn->resourceId})\n";
     }
 
+    private function sendToClients(ConnectionInterface $from, $msg) {
+        foreach ($this->clients as $client) {    
+            if ($from !== $client) {
+                // The sender is not the receiver, send to each client connected
+                $client->send($msg);
+                echo sprintf("Sending message " . $msg . " to " . $client->resourceId);
+            }
+            else {
+                echo sprintf("Not sending " . $msg . " to " . $client->resourceId);
+            }
+        }
+    }
+
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
 
-        /* if($msg=="generate random number"){
-            foreach ($this->clients as $client) {    
-                if ($from !== $client) {
-                    // The sender is not the receiver, send to each client connected
-                    $client->send($msg);
-                }
-            }
-        } */
-
-        if($msg=="do that"){
-            foreach ($this->clients as $client) {    
-                if ($from !== $client) {
-                    // The sender is not the receiver, send to each client connected
-                    $client->send($msg);
-                }
-            }
+        if ($msg == "generate random number") {
+            $this->sendToClients($from, $msg);
         }
+        else if ($msg == "do that") {
+            $this->sendToClients($from, $msg);
+        }
+        
         /* foreach ($this->clients as $client) {
             if ($from !== $client) {
                 // The sender is not the receiver, send to each client connected

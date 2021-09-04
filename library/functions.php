@@ -4,3 +4,4 @@ function random($min, $max){
       shuffle($numbers);
       return $numbers;
 }
+?>

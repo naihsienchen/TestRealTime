@@ -5,7 +5,7 @@
 
   //generate an array with min and max
   $result = "";
-  if(isset($_POST['submit'])){
+  if (isset($_POST['submit'])) {
     echo $_POST['min'];
     echo $_POST['max'];
     $_SESSION['result'] = random($_POST['min'], $_POST['max']); 
@@ -14,10 +14,10 @@
   }
 
   //pop out a value once the button is clicked
-  if(isset($_POST['result'])&&($result!==null)){
-  array_shift($_SESSION['result']);
-  $result = $_SESSION['result']; 
-  var_dump($result);
+  if (isset($_POST['result']) && ($result!==null)) {
+    array_shift($_SESSION['result']);
+    $result = $_SESSION['result']; 
+    var_dump($result);
   } elseif (isset($_POST['result'])&&(count($result)==0)) { 
     $result = "No more numbers available.";
   }
@@ -31,8 +31,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-  #ranNum {border-style: dotted;}
+    #ranNum {
+      border-style: dotted;
+    }
   </style>
+  
+  <script src="script/connect.js"></script>
 </head>
 <body>
   <form method="post">
@@ -44,12 +48,21 @@
   <div id="ranNum">random number here</div>
   <div id="seeRanNum">more</div>
 
-  <form method="post">
-    <input type="text" name="showResult" id="showResult"><?php 
-      if($result==!null){echo $result[0];} elseif (isset($_POST['result'])&&(count($result)==0)){ $result = "No more numbers available.";} ?></input>
-    <input type="submit" name="result" value="result" onclick="generateRandomNumber();"></input>
-    <input type="submit" name="test" value="test" onclick="doThat();"></input>
+  <!-- <form method="POST">
+    <input type="text" name="showResult" id="showResult">
+      <?php 
+        if($result==!null) {
+          echo $result[0];
+        } elseif (isset($_POST['result']) && (count($result)==0)) {
+          $result = "No more numbers available.";
+        }
+      ?>
+      </input>
+    <input type="submit" name="result" value="result" onclick="generateRandomNumber()"></input>
+    <input type="submit" name="test" value="test" onclick="doThat()"></input>
   </form>
-  <script src="script/connect.js"></script>
+   -->
+  <button onclick="generateRandomNumber()">Generate</button>
+  <button onclick="doThat()">Do That</button>
 </body>
 </html>
